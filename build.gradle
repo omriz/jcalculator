@@ -1,0 +1,22 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+ext {
+    javaMainClass = "com.github.omriz.jcalculator.JCalculator"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+application {
+    mainClassName = javaMainClass
+}
