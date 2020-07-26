@@ -1,5 +1,8 @@
 package com.github.omriz.jcalculator;
 
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +13,93 @@ public class JCalculator {
 
     public static void main(String[] args) {
         System.out.println("Hello from JCalcultor");
+        // Write either a file iterator or an input stream iterator
     }
 
     public Map<Character, Integer> getVariables() {
         return variables;
+    }
+
+    public String ProcessAdditionSubtraction(String line) {
+        Character[] noOps = {'*', '/', '%'};
+        String processedLine = "";
+        String leftSide = "";
+        CharacterIterator it = new StringCharacterIterator(line);
+        while (it.current() != CharacterIterator.DONE) {
+            if (Character.isDigit(it.current())) {
+                // Calculating the number
+                leftSide += String.valueOf(it.current());
+                it.next();
+            } else if (Arrays.asList(noOps).contains(it.current())) {
+                // We do nothing at this point and reset the state.
+                processedLine += leftSide + it.current();
+                leftSide = "";
+                it.next();
+            } else {
+                // So this is an actual operation now
+                String rightSide = "";
+                String operand = String.valueOf(it.current());
+                it.next();
+                while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
+                    rightSide += String.valueOf(it.current());
+                    it.next();
+                }
+                if (operand.equals("+")) {
+                    processedLine += String.valueOf(Integer.valueOf(leftSide) + Integer.valueOf(rightSide));
+                } else if (operand.equals("-")) {
+                    processedLine += String.valueOf(Integer.valueOf(leftSide) - Integer.valueOf(rightSide));
+                } else {
+                    throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
+                }
+                leftSide = "";
+            }
+        }
+        if (!leftSide.isEmpty()) {
+            processedLine += leftSide;
+        }
+        return processedLine;
+    }
+
+    public String ProcessMultiplicationDivision(String line) {
+        Character[] noOps = {'+', '-'};
+        String processedLine = "";
+        String leftSide = "";
+        CharacterIterator it = new StringCharacterIterator(line);
+        while (it.current() != CharacterIterator.DONE) {
+            if (Character.isDigit(it.current())) {
+                // Calculating the number
+                leftSide += String.valueOf(it.current());
+                it.next();
+            } else if (Arrays.asList(noOps).contains(it.current())) {
+                // We do nothing at this point and reset the state.
+                processedLine += leftSide + it.current();
+                leftSide = "";
+                it.next();
+            } else {
+                // So this is an actual operation now
+                String rightSide = "";
+                String operand = String.valueOf(it.current());
+                it.next();
+                while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
+                    rightSide += String.valueOf(it.current());
+                    it.next();
+                }
+                if (operand.equals("/")) {
+                    processedLine += String.valueOf(Integer.valueOf(leftSide) / Integer.valueOf(rightSide));
+                } else if (operand.equals("*")) {
+                    processedLine += String.valueOf(Integer.valueOf(leftSide) * Integer.valueOf(rightSide));
+                } else if (operand.equals("%")) {
+                    processedLine += String.valueOf(Integer.valueOf(leftSide) % Integer.valueOf(rightSide));
+                } else {
+                    throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
+                }
+                leftSide = "";
+            }
+        }
+        if (!leftSide.isEmpty()) {
+            processedLine += leftSide;
+        }
+        return processedLine;
     }
 
     // This is the core function in the calculator which processes a given line
@@ -26,9 +112,10 @@ public class JCalculator {
         evaluatedLine = CalculateParenthesis(evaluatedLine);
 
         // Process Multiplications/Divisions
+        evaluatedLine = ProcessMultiplicationDivision(evaluatedLine);
 
         // Process additions/subtractions
-        String finalValue = evaluatedLine;
+        String finalValue = ProcessAdditionSubtraction(evaluatedLine);
 
         // Return values
         return Integer.valueOf(finalValue);
@@ -99,7 +186,9 @@ public class JCalculator {
     }
 
     public void ProcessLine(String line) {
-        String[] splitLine = line.split("=");
+        // Simplifies processing
+        String l = line.replaceAll(" ", "");
+        String[] splitLine = l.split("=");
         if (splitLine.length != 2) {
             throw new IllegalArgumentException("Line \"" + line + "\" is invalid");
         }

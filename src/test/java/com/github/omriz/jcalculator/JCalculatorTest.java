@@ -17,11 +17,6 @@ public class JCalculatorTest {
     }
 
     @Test
-    public void testSimpleAddition() {
-        assertEquals(Integer.valueOf(2), jCalculator.ProcessLineValue("1+1"));
-    }
-
-    @Test
     public void testSimpleStatement() {
         assertEquals(Integer.valueOf(5), jCalculator.ProcessLineValue("5"));
     }
@@ -47,6 +42,24 @@ public class JCalculatorTest {
         jCalculator.ProcessLine("i=(1)");
         jCalculator.ProcessLine("j=((++i))");
         Map<Character, Integer> expected = Map.of('i', 2, 'j', 1);
+        assertTrue(expected.equals(jCalculator.getVariables()));
+    }
+
+    @Test
+    public void testSimpleDivision() {
+        jCalculator.ProcessLine("i=8");
+        jCalculator.ProcessLine("j=4");
+        jCalculator.ProcessLine("k = i / j");
+        Map<Character, Integer> expected = Map.of('i', 8, 'j', 4, 'k', 2);
+        assertTrue(expected.equals(jCalculator.getVariables()));
+    }
+
+    @Test
+    public void testSimpleAddition() {
+        jCalculator.ProcessLine("i=8");
+        jCalculator.ProcessLine("j=4");
+        jCalculator.ProcessLine("k = i + j");
+        Map<Character, Integer> expected = Map.of('i', 8, 'j', 4, 'k', 12);
         assertTrue(expected.equals(jCalculator.getVariables()));
     }
 }
