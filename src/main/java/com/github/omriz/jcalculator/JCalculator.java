@@ -39,19 +39,25 @@ public class JCalculator {
         // from the inside to the outside.
         String processedLine = line;
         while (processedLine.contains("(")) {
+            if (!processedLine.contains(")")) {
+                throw new IllegalArgumentException("Unbalanced parentheses in: \"" + line + "\"");
+            }
             int startIndex = 0;
             for (int i = 0; i <= processedLine.length(); i++) {
                 if (processedLine.charAt(i) == '(') {
                     startIndex = i;
                 } else if (processedLine.charAt(i) == ')') {
                     processedLine = processedLine.substring(0, startIndex) +
-                            ProcessLineValue(processedLine.substring(startIndex, i)) +
+                            ProcessLineValue(processedLine.substring(startIndex + 1, i)) +
                             processedLine.substring((i + 1));
                     break;
                 }
             }
         }
-        return processedLine
+        if (processedLine.contains(")")) {
+            throw new IllegalArgumentException("Unbalanced parentheses in: \"" + line + "\"");
+        }
+        return processedLine;
     }
 
     public String Eval(String line) {

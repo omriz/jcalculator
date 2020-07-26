@@ -41,4 +41,12 @@ public class JCalculatorTest {
         Map<Character, Integer> expected = Map.of('i', 2, 'j', 1);
         assertTrue(expected.equals(jCalculator.getVariables()));
     }
+
+    @Test
+    public void testCalculateParenthesis() {
+        jCalculator.ProcessLine("i=(1)");
+        jCalculator.ProcessLine("j=((++i))");
+        Map<Character, Integer> expected = Map.of('i', 2, 'j', 1);
+        assertTrue(expected.equals(jCalculator.getVariables()));
+    }
 }
