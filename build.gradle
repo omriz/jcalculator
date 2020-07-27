@@ -25,7 +25,7 @@ jar {
     manifest {
         attributes(
                 'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'com.github.omriz.jcalculator.JCalculator'
+                'Main-Class': javaMainClass
         )
     }
 }
