@@ -1,10 +1,14 @@
 package com.github.omriz.jcalculator;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class JCalculator {
 
@@ -13,7 +17,27 @@ public class JCalculator {
 
     public static void main(String[] args) {
         System.out.println("Hello from JCalcultor");
-        // Write either a file iterator or an input stream iterator
+        JCalculator jCalculator = new JCalculator();
+        if (args.length > 0) {
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(args[0]));
+                String line = reader.readLine();
+                while (line != null) {
+                    jCalculator.ProcessLine(line);
+                    line = reader.readLine();
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Scanner input = new Scanner(System.in);
+            while (input.hasNextLine()) {
+                jCalculator.ProcessLine(input.nextLine());
+            }
+        }
+        System.out.println(jCalculator.getVariables());
     }
 
     public Map<Character, Integer> getVariables() {
