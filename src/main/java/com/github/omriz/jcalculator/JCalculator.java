@@ -212,6 +212,9 @@ public class JCalculator {
     public void ProcessLine(String line) {
         // Simplifies processing
         String l = line.replaceAll(" ", "");
+        if (l.isEmpty() || l.startsWith("//") || l.startsWith("#")) {
+            return;
+        }
         String[] splitLine = l.split("=");
         if (splitLine.length != 2) {
             throw new IllegalArgumentException("Line \"" + line + "\" is invalid");
