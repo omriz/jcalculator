@@ -11,8 +11,3 @@ should have an "=" sign in it and evalute the expression
 
 Another way is not to pass a file and just run it in an "interperter" mode
 that processes stdin. Once you're done just press `Ctrl+D` and it'll handle it.
-
-## Improvments:
-Separate the variable store and evaluator to a different class and the calculator itself
-to a different class.
-i.e. make it more Object Oriented :-)
