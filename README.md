@@ -9,7 +9,7 @@ Tested with OpenJDK11
 1) Gradle
 2) Java 11
 ### Building
-You can run interactively with `./gradlew run`.
+You can run interactively with `./gradlew run --console=plain`. (console plain will make interacting with the cli easier)
 
 A better way is to build the jar using `./gradlew build` and then run it with `java -jar build/libs/jcalculator-1.0-SNAPSHOT.jar` -
 That way you won't get annoying gradle prompts along the way.
