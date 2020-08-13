@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariableStore {
-    private Map<Character, Integer> variables = new HashMap<>();
+    private final Map<Character, Integer> variables = new HashMap<>();
 
     public Map<Character, Integer> getVariables() {
         return variables;
@@ -12,10 +12,6 @@ public class VariableStore {
 
     public void put(Character key, Integer value) {
         variables.put(key, value);
-    }
-
-    public Integer get(Character key) {
-        return variables.get(key);
     }
 
     public String Eval(String line) {
@@ -26,12 +22,12 @@ public class VariableStore {
                 if (pIndex != 0 && Character.isLetter(processedLine.charAt(pIndex - 1))) {
                     Integer v = variables.get(processedLine.charAt(pIndex - 1));
                     variables.put(processedLine.charAt(pIndex - 1), v + 1);
-                    processedLine = processedLine.substring(0, pIndex - 1) + String.valueOf(v) + processedLine.substring(pIndex + 2);
+                    processedLine = processedLine.substring(0, pIndex - 1) + v + processedLine.substring(pIndex + 2);
                 }
                 if (pIndex != processedLine.length() && Character.isLetter(processedLine.charAt(pIndex + 2))) {
                     Integer v = variables.get(processedLine.charAt(pIndex + 2)) + 1;
                     variables.put(processedLine.charAt(pIndex + 2), v);
-                    processedLine = processedLine.substring(0, pIndex) + String.valueOf(v) + processedLine.substring(pIndex + 3);
+                    processedLine = processedLine.substring(0, pIndex) + v + processedLine.substring(pIndex + 3);
                 }
             }
             int nIndex = processedLine.indexOf("--");
@@ -39,12 +35,12 @@ public class VariableStore {
                 if (nIndex != 0 && Character.isLetter(processedLine.charAt(nIndex - 1))) {
                     Integer v = variables.get(processedLine.charAt(nIndex - 1));
                     variables.put(processedLine.charAt(nIndex - 1), v - 1);
-                    processedLine = processedLine.substring(0, nIndex - 1) + String.valueOf(v) + processedLine.substring(nIndex + 3);
+                    processedLine = processedLine.substring(0, nIndex - 1) + v + processedLine.substring(nIndex + 3);
                 }
                 if (nIndex != processedLine.length() && Character.isLetter(processedLine.charAt(nIndex + 2))) {
                     Integer v = variables.get(processedLine.charAt(nIndex + 2)) - 1;
                     variables.put(processedLine.charAt(nIndex + 2), v);
-                    processedLine = processedLine.substring(0, nIndex) + String.valueOf(v) + processedLine.substring(nIndex + 4);
+                    processedLine = processedLine.substring(0, nIndex) + v + processedLine.substring(nIndex + 4);
                 }
             }
         }

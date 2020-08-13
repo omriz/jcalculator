@@ -45,7 +45,7 @@ public class ArithmeticProcessor {
 
     private String ProcessMultiplicationDivision(String line) {
         Character[] noOps = {'+', '-'};
-        String processedLine = "";
+        StringBuilder processedLine = new StringBuilder();
         String leftSide = "";
         CharacterIterator it = new StringCharacterIterator(line);
         while (it.current() != CharacterIterator.DONE) {
@@ -53,44 +53,48 @@ public class ArithmeticProcessor {
                 // Calculating the number
                 leftSide += String.valueOf(it.current());
                 it.next();
-            } else if (it.current() == '-' && leftSide == "") {
+            } else if (it.current() == '-' && leftSide.equals("")) {
                 leftSide = "-";
                 it.next();
             }else if (Arrays.asList(noOps).contains(it.current())) {
                 // We do nothing at this point and reset the state.
-                processedLine += leftSide + it.current();
+                processedLine.append(leftSide).append(it.current());
                 leftSide = "";
                 it.next();
             } else {
                 // So this is an actual operation now
                 String operand = String.valueOf(it.current());
                 // Get the first character of the number - it can also be a '-' sign for negatives
-                String rightSide = String.valueOf(it.next());
+                StringBuilder rightSide = new StringBuilder(String.valueOf(it.next()));
                 it.next();
                 while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
-                    rightSide += String.valueOf(it.current());
+                    rightSide.append(it.current());
                     it.next();
                 }
-                if (operand.equals("/")) {
-                    processedLine += String.valueOf(Integer.valueOf(leftSide) / Integer.valueOf(rightSide));
-                } else if (operand.equals("*")) {
-                    processedLine += String.valueOf(Integer.valueOf(leftSide) * Integer.valueOf(rightSide));
-                } else if (operand.equals("%")) {
-                    processedLine += String.valueOf(Integer.valueOf(leftSide) % Integer.valueOf(rightSide));
-                } else {
-                    throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
+                switch (operand) {
+                    case "/":
+                        processedLine.append(Integer.parseInt(leftSide) / Integer.parseInt(rightSide.toString()));
+                        break;
+                    case "*":
+                        processedLine.append(Integer.parseInt(leftSide) * Integer.parseInt(rightSide.toString()));
+                        break;
+                    case "%":
+                        processedLine.append(Integer.parseInt(leftSide) % Integer.parseInt(rightSide.toString()));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
                 }
                 leftSide = "";
             }
         }
         if (!leftSide.isEmpty()) {
-            processedLine += leftSide;
+            processedLine.append(leftSide);
         }
-        return processedLine;
+        return processedLine.toString();
     }
 
     private String ProcessAdditionSubtraction(String line) {
-        String processedLine = "";
+        StringBuilder processedLine = new StringBuilder();
         String leftSide = "";
         CharacterIterator it = new StringCharacterIterator(line);
         while (it.current() != CharacterIterator.DONE) {
@@ -98,7 +102,7 @@ public class ArithmeticProcessor {
                 // Calculating the number
                 leftSide += String.valueOf(it.current());
                 it.next();
-            } else if (it.current() == '-' && leftSide == "") {
+            } else if (it.current() == '-' && leftSide.equals("")) {
                 // We got a negative number
                 leftSide = "-";
                 it.next();
@@ -106,19 +110,19 @@ public class ArithmeticProcessor {
                 // So this is an actual operation now
                 String operand = String.valueOf(it.current());
                 // Get the first character of the number - it can also be a '-' sign for negatives
-                String rightSide = String.valueOf(it.next());
+                StringBuilder rightSide = new StringBuilder(String.valueOf(it.next()));
                 it.next();
                 while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
-                    rightSide += String.valueOf(it.current());
+                    rightSide.append(it.current());
                     it.next();
                 }
                 if (operand.equals("+")) {
-                    processedLine += String.valueOf(Integer.valueOf(leftSide) + Integer.valueOf(rightSide));
+                    processedLine.append((Integer.parseInt(leftSide) + Integer.parseInt(rightSide.toString())));
                 } else if (operand.equals("-")) {
                     if (leftSide.isEmpty()) {
-                        processedLine += String.valueOf(-1 * Integer.valueOf(rightSide));
+                        processedLine.append(-1 * Integer.parseInt(rightSide.toString()));
                     } else {
-                        processedLine += String.valueOf(Integer.valueOf(leftSide) - Integer.valueOf(rightSide));
+                        processedLine.append((Integer.parseInt(leftSide) - Integer.parseInt(rightSide.toString())));
                     }
                 } else {
                     throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
@@ -127,8 +131,8 @@ public class ArithmeticProcessor {
             }
         }
         if (!leftSide.isEmpty()) {
-            processedLine += leftSide;
+            processedLine.append(leftSide);
         }
-        return processedLine;
+        return processedLine.toString();
     }
 }

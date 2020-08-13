@@ -13,7 +13,7 @@ public class JCalculator {
     ArithmeticProcessor arithmeticProcessor = new ArithmeticProcessor();
 
     public static void main(String[] args) {
-        System.out.println("Hello from JCalcultor");
+        System.out.println("Hello from JCalculator");
         JCalculator jCalculator = new JCalculator();
         if (args.length > 0) {
             BufferedReader reader;
