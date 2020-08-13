@@ -17,7 +17,7 @@ public class ArithmeticProcessor {
         return ProcessAdditionSubtraction(evaluatedLine);
     }
 
-    public String CalculateParenthesis(String line) {
+    private String CalculateParenthesis(String line) {
         // We'll go over the string while there's still parenthesis. We'll then calculate the values
         // from the inside to the outside.
         String processedLine = line;
@@ -43,7 +43,7 @@ public class ArithmeticProcessor {
         return processedLine;
     }
 
-    public String ProcessMultiplicationDivision(String line) {
+    private String ProcessMultiplicationDivision(String line) {
         Character[] noOps = {'+', '-'};
         String processedLine = "";
         String leftSide = "";
@@ -53,15 +53,19 @@ public class ArithmeticProcessor {
                 // Calculating the number
                 leftSide += String.valueOf(it.current());
                 it.next();
-            } else if (Arrays.asList(noOps).contains(it.current())) {
+            } else if (it.current() == '-' && leftSide == "") {
+                leftSide = "-";
+                it.next();
+            }else if (Arrays.asList(noOps).contains(it.current())) {
                 // We do nothing at this point and reset the state.
                 processedLine += leftSide + it.current();
                 leftSide = "";
                 it.next();
             } else {
                 // So this is an actual operation now
-                String rightSide = "";
                 String operand = String.valueOf(it.current());
+                // Get the first character of the number - it can also be a '-' sign for negatives
+                String rightSide = String.valueOf(it.next());
                 it.next();
                 while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
                     rightSide += String.valueOf(it.current());
@@ -85,8 +89,7 @@ public class ArithmeticProcessor {
         return processedLine;
     }
 
-    public String ProcessAdditionSubtraction(String line) {
-        Character[] noOps = {'*', '/', '%'};
+    private String ProcessAdditionSubtraction(String line) {
         String processedLine = "";
         String leftSide = "";
         CharacterIterator it = new StringCharacterIterator(line);
@@ -95,15 +98,15 @@ public class ArithmeticProcessor {
                 // Calculating the number
                 leftSide += String.valueOf(it.current());
                 it.next();
-            } else if (Arrays.asList(noOps).contains(it.current())) {
-                // We do nothing at this point and reset the state.
-                processedLine += leftSide + it.current();
-                leftSide = "";
+            } else if (it.current() == '-' && leftSide == "") {
+                // We got a negative number
+                leftSide = "-";
                 it.next();
             } else {
                 // So this is an actual operation now
-                String rightSide = "";
                 String operand = String.valueOf(it.current());
+                // Get the first character of the number - it can also be a '-' sign for negatives
+                String rightSide = String.valueOf(it.next());
                 it.next();
                 while (it.current() != CharacterIterator.DONE && Character.isDigit(it.current())) {
                     rightSide += String.valueOf(it.current());
@@ -112,7 +115,11 @@ public class ArithmeticProcessor {
                 if (operand.equals("+")) {
                     processedLine += String.valueOf(Integer.valueOf(leftSide) + Integer.valueOf(rightSide));
                 } else if (operand.equals("-")) {
-                    processedLine += String.valueOf(Integer.valueOf(leftSide) - Integer.valueOf(rightSide));
+                    if (leftSide.isEmpty()) {
+                        processedLine += String.valueOf(-1 * Integer.valueOf(rightSide));
+                    } else {
+                        processedLine += String.valueOf(Integer.valueOf(leftSide) - Integer.valueOf(rightSide));
+                    }
                 } else {
                     throw new IllegalArgumentException("Unknown operator: \"" + operand + "\"");
                 }
