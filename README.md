@@ -1,11 +1,19 @@
 # JCalculator
 
 ## Preface
-This is a little exercise I was given a while back to evaluate my programming.
-It's been a while since I practiced something like this so I decided it'll be
-nice to try it out and write a complete project in java and gradle.
+String line calculator written in Java and gradle.
+Tested with OpenJDK11
 
-## Usage:
+## Usage
+### Requirments
+1) Gradle
+2) Java 11
+### Building
+You can run interactively with `./gradlew run`.
+
+A better way is to build the jar using `./gradlew build` and then run it with `java -jar build/libs/jcalculator-1.0-SNAPSHOT.jar` -
+That way you won't get annoying gradle prompts along the way.
+
 You can either pass a file with commands in it. Assumption is that every line
 should have an "=" sign in it and evalute the expression
 

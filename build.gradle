@@ -21,6 +21,11 @@ application {
     mainClassName = javaMainClass
 }
 
+run {
+    standardInput = System.in
+    standardOutput = System.out
+}
+
 jar {
     manifest {
         attributes(
