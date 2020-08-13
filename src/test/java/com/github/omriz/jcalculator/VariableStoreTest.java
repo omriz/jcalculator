@@ -42,6 +42,4 @@ public class VariableStoreTest {
         String evaluatedLine = variableStore.Eval("i+6-j");
         assertEquals("1+6-5", evaluatedLine);
     }
-
-
 }
