@@ -33,4 +33,10 @@ public class ArithmeticProcessorTest {
         assertEquals("-4",arithmeticProcessor.CalculateString("-6+2"));
         assertEquals("-8",arithmeticProcessor.CalculateString("-6-2"));
     }
+    @Test
+    public void testParenthesis() {
+        assertEquals("24",arithmeticProcessor.CalculateString("(8+4)*2"));
+        assertEquals("-8",arithmeticProcessor.CalculateString("(-8+4)*2"));
+        assertEquals("-4",arithmeticProcessor.CalculateString("(8+4)/(-2-1)"));
+    }
 }
